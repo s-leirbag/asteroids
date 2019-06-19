@@ -1,22 +1,20 @@
-GameObject = Class{}
+Asteroid = Class{}
 
-function GameObject:init(x, y, dx, dy, size, angle)
+function Asteroid:init(x, y, dx, dy, size)
 	self.x = x
 	self.y = y
 	self.dx = dx
 	self.dy = dy
 	self.size = size
-	self.angle = angle
 end
 
-function GameObject:update(dt)
+function Asteroid:update(dt)
 	self.x = self.x + self.dx * dt
 	self.y = self.y + self.dy * dt
-
 	self.x, self.y = wrapCoords(self.x, self.y)
 end
 
-function GameObject:render()
+function Asteroid:render()
 	love.graphics.rectangle('line', self.x, self.y, self.size, self.size)
 
 	if self.x + self.size > VIRTUAL_WIDTH then

@@ -11,8 +11,8 @@ function love.load()
     })
     love.keyboard.keysPressed = {}
 
-    asteroids = {GameObject(30, 40, 20, -25, 30)}
-    player = GameObject(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0, 0, nil, 0)
+    asteroids = {Asteroid(30, 40, 20, -25, 30)}
+    player = Player(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0, 0, 2, 0)
 end
 
 function love.resize(w, h)
@@ -38,6 +38,8 @@ function love.update(dt)
         asteroid:update(dt)
     end
 
+    player:update(dt)
+
     love.keyboard.keysPressed = {}
     Timer.update(dt)
 end
@@ -48,6 +50,8 @@ function love.draw()
     for k, asteroid in pairs(asteroids) do
         asteroid:render()
     end
+
+    player:render()
 
     push:finish()
 end
