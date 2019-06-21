@@ -14,7 +14,7 @@ function wrapCoords(x, y)
 	return x, y
 end
 
-function drawPolygon(coords, color, outline, outlineColor, thickness)
+function drawModel(coords, color, outline, outlineColor, thickness)
 	if color then
 		love.graphics.setColor(color[1], color[2], color[3])
 	end
@@ -32,6 +32,39 @@ function drawPolygon(coords, color, outline, outlineColor, thickness)
 
 		drawLines(coords)
 	end
+end
+
+function transformModel(model, x, y, angle, scalar)
+	local newModel = {}
+	for k, vector in pairs(model) do
+		newModel[k] = vector
+	end
+
+	-- rotate
+	if angle then
+		for k, vector in pairs(model) do
+			newModel[k][1] = vector[1] * math.cos(math.rad(angle)) - vector[2] * math.sin(math.rad(angle))
+			newModel[k][2] = vector[1] * math.sin(math.rad(angle)) + vector[2] * math.cos(math.rad(angle))
+		end
+	end
+
+	-- scale
+	if scalar then
+		for k, vector in pairs(newModel) do
+			vector[1] = vector[1] * scalar
+			vector[2] = vector[2] * scalar
+		end
+	end
+
+	-- move
+	if x and y then
+		for k, vector in pairs(newModel) do
+			vector[1] = vector[1] + x
+			vector[2] = vector[2] + y
+		end
+	end
+
+	return newModel
 end
 
 function drawLines(coords)

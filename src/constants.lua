@@ -5,3 +5,18 @@ VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 320
 
 ASPECT_RATIO = VIRTUAL_HEIGHT / VIRTUAL_WIDTH
+
+SHIP_BLUEPRINT = {
+	{0, -5},
+	{3, 3},
+	{0, 1},
+	{-3, 3}
+}
+
+ASTEROID_BLUEPRINT = {}
+
+for i = 1, 20 do
+	local angle = i / 20 * 360
+	local radius = math.random(0.7, 1.3)
+	table.insert(ASTEROID_BLUEPRINT, {radius * math.sin(math.rad(angle)), radius * math.cos(math.rad(angle))})
+end
