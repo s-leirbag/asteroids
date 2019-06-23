@@ -17,6 +17,6 @@ ASTEROID_BLUEPRINT = {}
 
 for i = 1, 20 do
 	local angle = i / 20 * 360
-	local radius = math.random(0.7, 1.3)
-	table.insert(ASTEROID_BLUEPRINT, {radius * math.sin(math.rad(angle)), radius * math.cos(math.rad(angle))})
+	local radius = math.random(5.0, 7.0)
+	table.insert(ASTEROID_BLUEPRINT, {radius * math.cos(math.rad(angle)), radius * math.sin(math.rad(angle))})
 end

@@ -37,13 +37,17 @@ end
 function transformModel(model, x, y, angle, scalar)
 	local newModel = {}
 	for k, vector in pairs(model) do
-		newModel[k] = vector
+		newModel[k] = {}
+
+		for i, coordinate in pairs(vector) do
+			newModel[k][i] = coordinate
+		end
 	end
 
 	-- rotate
 	if angle then
-		for k, vector in pairs(model) do
-			newModel[k][1] = vector[1] * math.cos(math.rad(angle)) - vector[2] * math.sin(math.rad(angle))
+		for k, vector in pairs(model) do	-- model, not newModel, because otherwise there is no buffer for variable change
+			newModel[k][1] = vector[1] * math.cos(math.rad(angle)) + vector[2] * -math.sin(math.rad(angle))
 			newModel[k][2] = vector[1] * math.sin(math.rad(angle)) + vector[2] * math.cos(math.rad(angle))
 		end
 	end

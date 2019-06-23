@@ -11,8 +11,8 @@ function love.load()
     })
     love.keyboard.keysPressed = {}
 
-    asteroids = {Asteroid(100, 100, 20, -25, 6, 0)}
-    player = Player(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0, 0, 8, 0)
+    asteroids = {Asteroid(100, 100, 20, -25, 5, 0)}
+    player = Player(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0, 0, 5, 0)
 end
 
 function love.resize(w, h)

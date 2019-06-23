@@ -7,12 +7,6 @@ function Player:init(x, y, dx, dy, size, angle)
 	self.dy = dy
 	self.size = size
 	self.angle = angle
-
-	-- scale up ship blueprint
-	for k, vector in pairs(SHIP_BLUEPRINT) do
-		vector[1] = vector[1] * self.size
-		vector[2] = vector[2] * self.size
-	end
 end
 
 function Player:update(dt)
@@ -37,11 +31,19 @@ function Player:update(dt)
 	self.x = self.x + self.dx * dt
 	self.y = self.y + self.dy * dt
 	self.x, self.y = wrapCoords(self.x, self.y)
+
+	if math.abs(self.angle) > 180 then
+		if self.angle > 0 then
+			self.angle = self.angle - 360
+		else
+			self.angle = self.angle + 360
+		end
+	end
 end
 
 function Player:render()
 	-- render actual
-	local render_ship = transformModel(SHIP_BLUEPRINT, self.x, self.y, self.angle)
+	local render_ship = transformModel(SHIP_BLUEPRINT, self.x, self.y, self.angle, self.size)
 	drawModel(coords_out(render_ship), {0.8, 0.2, 0.2}, true, {1, 1, 1}, 1)
 
 	-- if on edge, draw other ships
@@ -66,12 +68,13 @@ function Player:render()
 
 		if render_ship[1][1] > VIRTUAL_WIDTH or render_ship[2][1] > VIRTUAL_WIDTH or render_ship[4][1] > VIRTUAL_WIDTH then
 			for k, vector in pairs(render_ship) do
-				vector[1] = vector[1] + VIRTUAL_WIDTH
+				vector[1] = vector[1] - VIRTUAL_WIDTH
 			end
 			drawModel(coords_out(render_ship), {0.8, 0.2, 0.2}, true, {1, 1, 1}, 1)
+
 		elseif render_ship[1][1] < 0 or render_ship[2][1] < 0 or render_ship[4][1] < 0 then
 			for k, vector in pairs(render_ship) do
-				vector[1] = vector[1] - VIRTUAL_WIDTH
+				vector[1] = vector[1] + VIRTUAL_WIDTH
 			end
 			drawModel(coords_out(render_ship), {0.8, 0.2, 0.2}, true, {1, 1, 1}, 1)
 		end
@@ -85,14 +88,18 @@ function Player:render()
 
 		if render_ship[1][1] > VIRTUAL_WIDTH or render_ship[2][1] > VIRTUAL_WIDTH or render_ship[4][1] > VIRTUAL_WIDTH then
 			for k, vector in pairs(render_ship) do
-				vector[1] = vector[1] + VIRTUAL_WIDTH
+				vector[1] = vector[1] - VIRTUAL_WIDTH
 			end
 			drawModel(coords_out(render_ship), {0.8, 0.2, 0.2}, true, {1, 1, 1}, 1)
+
 		elseif render_ship[1][1] < 0 or render_ship[2][1] < 0 or render_ship[4][1] < 0 then
 			for k, vector in pairs(render_ship) do
-				vector[1] = vector[1] - VIRTUAL_WIDTH
+				vector[1] = vector[1] + VIRTUAL_WIDTH
 			end
 			drawModel(coords_out(render_ship), {0.8, 0.2, 0.2}, true, {1, 1, 1}, 1)
 		end
 	end
+
+	-- print coordinates
+	-- love.graphics.print("x: " .. math.floor(self.x) .. ", y: " .. math.floor(self.y) .. ", angle: " .. math.floor(self.angle), 10, 10)
 end
