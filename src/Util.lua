@@ -16,14 +16,14 @@ end
 
 function drawModel(coords, color, outline, outlineColor, thickness)
 	if color then
-		love.graphics.setColor(color[1], color[2], color[3])
+		love.graphics.setColor(color)
 	end
 
 	love.graphics.polygon('fill', coords)
 
 	if outline then
 		if outlineColor then
-			love.graphics.setColor(outlineColor[1], outlineColor[2], outlineColor[3])
+			love.graphics.setColor(outlineColor)
 		end
 		
 		if thickness then

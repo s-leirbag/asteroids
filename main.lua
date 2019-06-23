@@ -11,8 +11,9 @@ function love.load()
     })
     love.keyboard.keysPressed = {}
 
-    asteroids = {Asteroid(100, 100, 20, -25, 5, 0)}
-    player = Player(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0, 0, 5, 0)
+    player = Object(1, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0, 0, 5, 0)
+    asteroids = {Object(math.random(3, 6), 100, 100, 20, -25, 16, 0)} --- make sure asteroid doesn't spawn on player later
+    bullets = {}
 end
 
 function love.resize(w, h)
@@ -34,8 +35,43 @@ end
 function love.update(dt)
     updateMouse()
 
+    -- PLAYER
+    -- steering
+    if love.keyboard.isDown('left') then
+        player.angle = player.angle - 230 * dt
+
+        if player.angle < -180 then
+            player.angle = player.angle + 360
+        end
+    end
+    
+    if love.keyboard.isDown('right') then
+        player.angle = player.angle + 230 * dt
+
+        if player.angle > 180 then
+            player.angle = player.angle - 360
+        end
+    end
+
+    -- thrust
+    if love.keyboard.isDown('up') then
+        player.dx = player.dx + math.sin(math.rad(player.angle)) * 20
+        player.dy = player.dy + -math.cos(math.rad(player.angle)) * 20
+        player.dx = player.dx * 0.9
+        player.dy = player.dy * 0.9
+    end
+
+    -- bullets
+    if love.keyboard.isDown('space') then
+        table.insert(bullets, Object(2, player.x, player.y, math.sin(player.angle) * BULLET_SPEED, -math.cos(player.angle) * BULLET_SPEED, 2, player.angle))
+    end
+
     for k, asteroid in pairs(asteroids) do
         asteroid:update(dt)
+    end
+
+    for k, bullet in ipairs(bullets) do
+        bullet:update(dt)
     end
 
     player:update(dt)
@@ -49,6 +85,10 @@ function love.draw()
 
     for k, asteroid in pairs(asteroids) do
         asteroid:render()
+    end
+
+    for k, bullet in ipairs(bullets) do
+        bullet:render()
     end
 
     player:render()

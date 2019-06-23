@@ -4,19 +4,31 @@ WINDOW_HEIGHT = 640
 VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 320
 
-ASPECT_RATIO = VIRTUAL_HEIGHT / VIRTUAL_WIDTH
+BULLET_SPEED = 100
 
-SHIP_BLUEPRINT = {
-	{0, -5},
-	{3, 3},
-	{0, 1},
-	{-3, 3}
+BLUEPRINTS = {
+	-- ship
+	{
+		{0, -5},
+		{3, 3},
+		{0, 1},
+		{-3, 3}
+	},
+	-- bullet
+	{
+		{-1, -2},
+		{1, -2},
+		{1, -1},
+		{-1, -1}
+	},
 }
 
-ASTEROID_BLUEPRINT = {}
-
-for i = 1, 20 do
-	local angle = i / 20 * 360
-	local radius = math.random(5.0, 7.0)
-	table.insert(ASTEROID_BLUEPRINT, {radius * math.cos(math.rad(angle)), radius * math.sin(math.rad(angle))})
+-- asteroids
+for k = 3, 6 do
+	BLUEPRINTS[k] = {}
+	for i = 1, 20 do
+		local angle = i / 20 * 360
+		local radius = math.random() * 0.4 + 0.8
+		table.insert(BLUEPRINTS[k], {radius * math.cos(math.rad(angle)), radius * math.sin(math.rad(angle))})
+	end
 end

@@ -13,10 +13,18 @@ function Player:update(dt)
 	-- steering
 	if love.keyboard.isDown('left') then
 		self.angle = self.angle - 230 * dt
-	end
 
+		if self.angle < -180 then
+			self.angle = self.angle + 360
+		end
+	end
+	
 	if love.keyboard.isDown('right') then
 		self.angle = self.angle + 230 * dt
+
+		if self.angle > 180 then
+			self.angle = self.angle - 360
+		end
 	end
 
 	-- thrust
@@ -31,14 +39,6 @@ function Player:update(dt)
 	self.x = self.x + self.dx * dt
 	self.y = self.y + self.dy * dt
 	self.x, self.y = wrapCoords(self.x, self.y)
-
-	if math.abs(self.angle) > 180 then
-		if self.angle > 0 then
-			self.angle = self.angle - 360
-		else
-			self.angle = self.angle + 360
-		end
-	end
 end
 
 function Player:render()
