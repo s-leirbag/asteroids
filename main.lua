@@ -11,7 +11,7 @@ function love.load()
     })
     love.keyboard.keysPressed = {}
 
-    player = Object(1, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0, 0, 5, 0)
+    player = Object(1, VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 0, 0, 3, 0)
     asteroids = {Object(math.random(3, 6), 100, 100, 20, -25, 16, 0)} --- make sure asteroid doesn't spawn on player later
     bullets = {}
 end
@@ -55,15 +55,15 @@ function love.update(dt)
 
     -- thrust
     if love.keyboard.isDown('up') then
-        player.dx = player.dx + math.sin(math.rad(player.angle)) * 20
-        player.dy = player.dy + -math.cos(math.rad(player.angle)) * 20
+        player.dx = player.dx + math.sin(math.rad(player.angle)) * 10
+        player.dy = player.dy + -math.cos(math.rad(player.angle)) * 10
         player.dx = player.dx * 0.9
         player.dy = player.dy * 0.9
     end
 
     -- bullets
-    if love.keyboard.isDown('space') then
-        table.insert(bullets, Object(2, player.x, player.y, math.sin(player.angle) * BULLET_SPEED, -math.cos(player.angle) * BULLET_SPEED, 2, player.angle))
+    if love.keyboard.wasPressed('space') then
+        table.insert(bullets, Object(2, player.x, player.y, math.sin(math.rad(player.angle)) * BULLET_SPEED, -math.cos(math.rad(player.angle)) * BULLET_SPEED, 2, player.angle))
     end
 
     for k, asteroid in pairs(asteroids) do
@@ -72,6 +72,14 @@ function love.update(dt)
 
     for k, bullet in ipairs(bullets) do
         bullet:update(dt)
+
+        for i, vector in pairs(bullet.model) do
+            if vector[1] > VIRTUAL_WIDTH or vector[1] < 0 or vector[2] > VIRTUAL_HEIGHT or vector[2] < 0 then
+                table.remove(bullets, k)
+
+                break
+            end
+        end
     end
 
     player:update(dt)
@@ -92,6 +100,8 @@ function love.draw()
     end
 
     player:render()
+
+    love.graphics.print("angle: " .. player.angle, 10, 10)
 
     push:finish()
 end
